@@ -6,24 +6,93 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-
 import 'package:sample_project/main.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
+  final TestWidgetsFlutterBinding binding =
+      TestWidgetsFlutterBinding.ensureInitialized();
+  final Size phone = Size(411.4, 820.6);
+  final tablet = Size(1600, 1024);
+
+  testWidgets('Test init', (WidgetTester tester) async {
+    await binding.setSurfaceSize(phone);
+
     // Build our app and trigger a frame.
-    await tester.pumpWidget(new MyApp());
+    await tester.pumpWidget(MyApp());
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+    expect(find.byType(CheckableItem), findsNWidgets(5));
+    CheckableItem widget = tester.widget(find.byType(CheckableItem).at(1));
+    expect(widget.title, "is");
+    expect(widget.isChecked, false);
+  });
 
-    // Tap the '+' icon and trigger a frame.
+  testWidgets('Test check item', (WidgetTester tester) async {
+    await binding.setSurfaceSize(phone);
+
+    await tester.pumpWidget(MyApp());
+
+    var list = List<Checkbox>.from(tester.widgetList(find.byType(Checkbox)))
+        .map((checkbox) => checkbox.value);
+
+    expect(list.contains(true), isFalse);
+
+    await tester.tap(find.byType(CheckableItem).last);
+    await tester.pumpAndSettle();
+
+    list = List<Checkbox>.from(tester.widgetList(find.byType(Checkbox)))
+        .map((checkbox) => checkbox.value);
+
+    expect(list.contains(true), isTrue);
+  });
+
+  testWidgets('Test flow', (WidgetTester tester) async {
+    await binding.setSurfaceSize(phone);
+
+    await tester.pumpWidget(MyApp());
+
+    CheckableItem last = tester.widget(find.byType(CheckableItem).last);
+    expect(last.title, "YO!");
+
     await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
+    await tester.pumpAndSettle();
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+    await tester.enterText(find.byType(TextField), "Grattis Erik 22 år!");
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.byIcon(Icons.done));
+    await tester.pumpAndSettle();
+
+    last = tester.widget(find.byType(CheckableItem).last);
+    expect(last.title, "Grattis Erik 22 år!");
+  });
+
+  testWidgets('Test flow phone', (WidgetTester tester) async {
+    await binding.setSurfaceSize(phone);
+
+    await tester.pumpWidget(MyApp());
+
+    expect(find.byType(MyHomePage), findsOneWidget);
+    expect(find.byType(ItemCreator), findsNothing);
+
+    await tester.tap(find.byIcon(Icons.add));
+    await tester.pumpAndSettle();
+
+    expect(find.byType(MyHomePage), findsNothing);
+    expect(find.byType(ItemCreator), findsOneWidget);
+  });
+
+  testWidgets('Test flow master-detail', (WidgetTester tester) async {
+    await binding.setSurfaceSize(tablet);
+
+    await tester.pumpWidget(MaterialApp(
+      home: MediaQuery(
+          data: MediaQueryData(size: tablet),
+          child: MyHomePage(
+            title: "This is testing yo!",
+          )),
+    ));
+
+    expect(find.byType(MyHomePage), findsOneWidget);
+    expect(find.byType(ItemCreator), findsOneWidget);
   });
 }

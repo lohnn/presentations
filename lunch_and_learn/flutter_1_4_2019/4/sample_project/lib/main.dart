@@ -47,24 +47,20 @@ class _MyHomePageState extends State<MyHomePage> {
               ]
             : null,
       ),
-      body: ListView.builder(
-        itemBuilder: (context, index) {
-          var myItem = myList[index];
-          return CheckableItem(
-            myItem.title,
-            myItem.isChecked,
-            valueChanged: (value) {
-              setState(() {
-                myItem.isChecked = value;
-              });
-            },
-            onLongPressed: () {
-              _addItem(myItem.title);
-            },
+      body: OrientationBuilder(builder: (context, orientation) {
+        if (MediaQuery.of(context).size.width <= 600) {
+          //Phone
+          return buildListView();
+        } else {
+          //Big display
+          return Row(
+            children: <Widget>[
+              Expanded(child: buildListView()),
+              Expanded(child: ItemCreator("Create item here please:")),
+            ],
           );
-        },
-        itemCount: myList.length,
-      ),
+        }
+      }),
       floatingActionButton: Theme.of(context).platform == TargetPlatform.android
           ? new FloatingActionButton(
               onPressed: () => _addItem(""),
@@ -72,6 +68,27 @@ class _MyHomePageState extends State<MyHomePage> {
               child: new Icon(Icons.add),
             )
           : null,
+    );
+  }
+
+  ListView buildListView() {
+    return ListView.builder(
+      itemBuilder: (context, index) {
+        var myItem = myList[index];
+        return CheckableItem(
+          myItem.title,
+          myItem.isChecked,
+          valueChanged: (value) {
+            setState(() {
+              myItem.isChecked = value;
+            });
+          },
+          onLongPressed: () {
+            _addItem(myItem.title);
+          },
+        );
+      },
+      itemCount: myList.length,
     );
   }
 
