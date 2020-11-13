@@ -7,7 +7,7 @@
 
 ## Start content creation
 - [ ] Clean out all comments
-    - [ ] ([ \t]*//.*)
+    - [ ] (//.\*)
 - [ ] Show hot reload
     - [ ] Change increment counter to decrement
     - [ ] Change some texts
@@ -66,7 +66,7 @@
 - [ ] MyApp theme
     - [ ] Add platform: TargetPlatform.iOS,
 - [ ] Add platform check on FAB
-    - [ ] Theme.of(context).platform == TargetPlatform.android ? :
+    - [ ] Platform.isAndroid
 
 ## Edit list item
  - [ ] If we have time
