@@ -1,0 +1,424 @@
+<!doctype html>
+<html lang="sv">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Att lära AI drömma</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/theme/black.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,700;1,400&display=swap');
+    :root {
+      --r-background-color: #0f0e17;
+      --r-main-color: #fffffe;
+      --r-heading-color: #ff8906;
+      --r-link-color: #e53170;
+      --accent: #ff8906;
+      --accent2: #e53170;
+      --accent3: #7f5af0;
+      --surface: #1a1932;
+      --muted: #a7a9be;
+    }
+    .reveal {
+      background-color: var(--r-background-color);
+      background-image:
+        radial-gradient(ellipse at 20% 80%, rgba(127,90,240,0.08) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 20%, rgba(255,137,6,0.06) 0%, transparent 50%);
+      font-family: 'Inter', sans-serif;
+    }
+    .reveal h1, .reveal h2, .reveal h3 {
+      color: var(--r-heading-color);
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+      text-shadow: 0 0 40px rgba(255,137,6,0.15);
+    }
+    .reveal h1 { font-size: 2.6em; }
+    .reveal p, .reveal li { font-weight: 300; line-height: 1.6; }
+    .reveal blockquote {
+      background: linear-gradient(135deg, rgba(127,90,240,0.1), rgba(255,137,6,0.05));
+      border-left: 4px solid var(--accent3);
+      border-radius: 0 12px 12px 0;
+      padding: 1.2em 1.8em;
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 1.1em;
+      width: 85%;
+      box-shadow: 0 4px 30px rgba(0,0,0,0.3);
+    }
+    .reveal table { margin: 0 auto; font-size: 0.75em; border-collapse: separate; border-spacing: 0; }
+    .reveal table th {
+      color: var(--accent);
+      border-bottom: 2px solid var(--accent);
+      padding: 0.6em 1.2em;
+      text-transform: uppercase;
+      font-size: 0.85em;
+      letter-spacing: 0.05em;
+    }
+    .reveal table td {
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      padding: 0.6em 1.2em;
+    }
+    .reveal .highlight { color: var(--accent); font-weight: 600; }
+    .reveal .highlight2 { color: var(--accent2); font-weight: 600; }
+    .reveal .highlight3 { color: var(--accent3); font-weight: 600; }
+    .reveal .dim { color: var(--muted); font-size: 0.7em; }
+    .reveal .emoji { font-size: 4em; margin-bottom: 0.3em; filter: drop-shadow(0 0 20px rgba(255,137,6,0.4)); }
+    .reveal ul { text-align: left; }
+    .reveal li { margin-bottom: 0.4em; }
+    .reveal li .dim { display: block; margin-top: 0.2em; }
+    .cycle-diagram { font-family: 'Inter', sans-serif; font-size: 0.9em; line-height: 2; }
+    .cycle-diagram .highlight { font-size: 1.1em; }
+    .fragment.semi-fade-out.visible { opacity: 0.3; }
+    .slide-icon { font-size: 2em; margin-bottom: 0.5em; opacity: 0.8; }
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 2em; text-align: left; }
+    .card {
+      background: var(--surface);
+      border-radius: 12px;
+      padding: 1.2em 1.5em;
+      border: 1px solid rgba(255,255,255,0.05);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    }
+    .big-number { font-size: 3em; font-weight: 700; color: var(--accent); line-height: 1; }
+    .subtitle { color: var(--muted); font-size: 0.9em; margin-top: 0.5em; }
+  </style>
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+
+<!-- 1. TITEL -->
+<section>
+  <p class="emoji">🌙</p>
+  <h1>Att lära AI drömma</h1>
+  <p>Hur LLM-agenter kan bli smartare<br>genom att glömma rätt saker</p>
+  <aside class="notes">
+    Välkomna. Idag ska vi prata om något kontraintuitivt: att AI-agenter kan bli bättre genom att glömma.
+    Ni vet hur det känns att sova på ett problem och vakna med svaret? Det visar sig att samma princip kan appliceras på LLM-agenter.
+    30 minuter, gott om tid för frågor efteråt.
+  </aside>
+</section>
+
+<!-- 2. PROBLEMET — MÄNSKLIG INGÅNG -->
+<section>
+  <p class="slide-icon">🧠</p>
+  <h2>Arbetsminne</h2>
+  <ul>
+    <li class="fragment">Du sitter i ett möte. Timme tre. Någon refererar till något som sades i minut fem — <span class="highlight">du minns det inte</span>.</li>
+    <li class="fragment">Din hjärna har ett <span class="highlight">begränsat arbetsminne</span>. Den kan inte hålla allt samtidigt.</li>
+    <li class="fragment">AI-agenter har exakt samma begränsning — det kallas <span class="highlight2">kontextfönster</span>.</li>
+    <li class="fragment">Och precis som du: när fönstret fylls, tappas information.</li>
+  </ul>
+  <aside class="notes">
+    Vi börjar med något alla känner igen. Det där långa mötet. Du är skarp i början, men efter ett par timmar glider saker förbi.
+    Hjärnans arbetsminne rymmer ungefär 7 saker samtidigt. Resten måste bearbetas, lagras, eller tappas.
+    AI-agenter har samma typ av begränsning. Deras kontextfönster är som arbetsminnet — stort men ändligt. Och precis som oss: när det fylls, börjar saker falla bort.
+    Men här kommer det intressanta. Vad gör vi människor åt det?
+  </aside>
+</section>
+
+<!-- 3. MÄNSKLIG ANALOGI — SÖMN -->
+<section>
+  <p class="slide-icon">🌙</p>
+  <h2>Sova på saken</h2>
+  <ul>
+    <li class="fragment">Du har ett olösligt problem. Du går och lägger dig. Du <span class="highlight">vaknar med svaret</span>.</li>
+    <li class="fragment">Det är inte magi — din hjärna <span class="highlight2">jobbar aktivt</span> under sömnen</li>
+    <li class="fragment">Sorterar bort brus. Bevarar det viktiga. <span class="highlight3">Hittar kopplingar</span> som var osynliga i vaket tillstånd.</li>
+    <li class="fragment">Vi vaknar inte med mer information — vi vaknar med <span class="highlight">bättre förståelse</span>.</li>
+  </ul>
+  <p class="fragment dim">Walker, "Why We Sleep" — sömn hittar kopplingar osynliga under vakenhet</p>
+  <aside class="notes">
+    Alla har upplevt det här. Ett problem som kändes omöjligt på kvällen — och på morgonen har du svaret, nästan magiskt.
+    Neurovetenskap visar att sömn inte är passiv nedstängning. Hjärnan reorganiserar aktivt — sorterar bort detaljer, behåller mönster, kopplar ihop saker som inte hängde ihop under dagen.
+    Vi förlorar detaljer under natten. Men vi vaknar klokare. Inte trots att vi glömt — utan tack vare det.
+    Och nu tänker ni kanske redan: kan vi ge AI-agenter samma förmåga? Det är precis det den här presentationen handlar om.
+  </aside>
+</section>
+
+<!-- 3b. BRYGGAN -->
+<section>
+  <h2>Tänk om AI kunde göra samma sak?</h2>
+  <br>
+  <p class="fragment">Människor: arbetsminne fylls → sömn → vaknar klokare</p>
+  <p class="fragment">AI-agenter: kontextfönster fylls → <span class="highlight">???</span> → ???</p>
+  <br>
+  <p class="fragment">Idag kastar vi bort information som en nödåtgärd.</p>
+  <p class="fragment">Tänk om vi istället lät agenten <span class="highlight">"sova på saken"</span>?</p>
+  <aside class="notes">
+    Det här är bryggan. Vi människor har löst det här problemet evolutionärt — genom sömn. Information komprimeras, mönster förstärks, detaljer försvinner men förståelsen ökar.
+    AI-agenter idag? När kontextfönstret fylls behandlar vi det som en bugg. Vi försöker minimera skadan, bevara så mycket som möjligt.
+    Men tänk om vi tänker helt fel? Tänk om komprimering — rätt gjort — inte är förlust utan vinst?
+  </aside>
+</section>
+
+<!-- 4. KÄRNINSIKTEN -->
+<section>
+  <h2>Kärninsikten</h2>
+  <br>
+  <blockquote class="fragment">
+    Kompression är inte förlust.<br>
+    <span class="highlight">Det är syntes.</span>
+  </blockquote>
+  <br>
+  <p class="fragment">Tänk på hur du minns din barndom.<br>Inte varje dag — men <span class="highlight2">essensen</span>. Känslan. Lärdomarna.</p>
+  <p class="fragment">Agenten går från att veta <em>vad som hände</em><br>till att veta <em>vad som spelar roll</em>.</p>
+  <aside class="notes">
+    Det här är den centrala insikten. Tänk på ert eget liv. Ni minns inte varje dag från er barndom. Men ni har kvar essensen — vilka ni var, vad ni lärde er, vad som formade er.
+    Den informationen är mer komprimerad men också mer värdefull för er idag. Ni behöver inte minnas exakt vad som hände den 3:e mars 1995 för att veta vem ni är.
+    Samma princip gäller AI-agenter. Kompression producerar inte en svagare agent — den producerar en som bytt precision mot mönsterigenkänning, detaljer mot principer.
+  </aside>
+</section>
+
+<!-- 5. KUNSKAPSTRAPPAN -->
+<section>
+  <p class="slide-icon">📐</p>
+  <h2>Kunskapstrappan</h2>
+  <table>
+    <tr class="fragment"><th>Nivå</th><th>Vad det är</th><th>Du känner igen det som...</th></tr>
+    <tr class="fragment"><td>Rådata</td><td>Allt som hänt, varje detalj</td><td>Dina anteckningar mitt i mötet</td></tr>
+    <tr class="fragment"><td>Mönster</td><td>Det viktiga har filtrerats fram</td><td>Din sammanfattning på kvällen</td></tr>
+    <tr class="fragment"><td>Principer</td><td>Överförbara regler</td><td>Det du berättar för en kollega om projektet</td></tr>
+    <tr class="fragment"><td>Intuition</td><td>Outtalat men kalibrerat</td><td>Din magkänsla efter 10 års erfarenhet</td></tr>
+  </table>
+  <aside class="notes">
+    Tänk på kunskapen som en trappa. Längst ner har vi all rådata. Varje komprimering tar oss ett steg upp.
+    Anteckningarna ni gör under ett möte — det är rådata. Sammanfattningen ni skriver efteråt — det är mönster. Det ni berättar för en kollega veckan efter — det är principer. Och magkänslan ni har efter tio år i branschen — det är intuition.
+    Varje nivå har sitt värde. Men det intressanta: de högre nivåerna är mer portabla. Er magkänsla fungerar i nya situationer. Era anteckningar gör det inte.
+  </aside>
+</section>
+
+<!-- 6. NÄR SKA AGENTEN SOVA? -->
+<section>
+  <p class="slide-icon">⏰</p>
+  <h2>När är det dags att sova?</h2>
+  <p class="fragment dim" style="font-size:0.85em; margin-bottom:1em;">Du känner igen det: du läser samma stycke tre gånger. Tankarna spretar. Du behöver inte mer kaffe — du behöver sömn.</p>
+  <ul>
+    <li class="fragment"><span class="highlight">Motsägelser</span> — håller motstridiga tankar utan att lösa dem</li>
+    <li class="fragment"><span class="highlight2">Upprepning</span> — härleder saker den redan kommit fram till</li>
+    <li class="fragment"><span class="highlight3">Koherensförlust</span> — tappar konsistens, börjar "spreta"</li>
+    <li class="fragment"><span class="highlight">Mättnad</span> — vet tillräckligt brett, behöver gå på djupet</li>
+  </ul>
+  <br>
+  <p class="fragment">Nyckeln: <span class="highlight">medvetet val</span> att sova — inte vänta på utmattning.</p>
+  <aside class="notes">
+    Ni vet känslan. Ni läser samma stycke om och om igen. Ni kan inte hålla en tanke. Det är inte lathet — det är hjärnan som signalerar att den behöver konsolidera.
+    Samma signaler kan byggas in i AI-agenter. Istället för att vänta tills fönstret tvingar komprimering, lär vi agenten känna igen: jag upprepar mig, jag tappar tråden, jag har motsägelser jag inte löser.
+    Skillnaden mellan att somna av utmattning och att välja att lägga sig. Det senare ger bättre sömn — och bättre resultat.
+  </aside>
+</section>
+
+<!-- 7. DRÖMDJUP -->
+<section>
+  <p class="slide-icon">🌊</p>
+  <h2>Drömdjup</h2>
+  <table>
+    <tr><th>Djup</th><th>Reduktion</th><th>Mänsklig motsvarighet</th></tr>
+    <tr class="fragment"><td><span class="highlight">Lätt</span></td><td>~40%</td><td>En powernap — du minns strukturen, glömmer detaljerna</td></tr>
+    <tr class="fragment"><td><span class="highlight2">Djup</span></td><td>~75%</td><td>En hel natts sömn — resonemang blir principer</td></tr>
+    <tr class="fragment"><td><span class="highlight3">Total</span></td><td>~95%</td><td>År av erfarenhet — bara magkänslan kvar</td></tr>
+  </table>
+  <br>
+  <p class="fragment dim">Ju djupare drömmen, desto mer portabel kunskapen.</p>
+  <aside class="notes">
+    Tre nivåer. En powernap mitt i arbetet — du behåller strukturen men detaljerna suddar ut. En hel natts sömn — detaljerade resonemang blir generella principer. Och den djupaste nivån: år av erfarenhet komprimerat till ren intuition.
+    Paradoxen: en agent som gått igenom total komprimering av säkerhetskunskap navigerade direkt till sårbarheter i en helt ny kodbas, i ett annat programmeringsspråk. Intuition är portabel på ett sätt som detaljer aldrig kan vara.
+  </aside>
+</section>
+
+<!-- 8. VAD ÖVERLEVER? -->
+<section>
+  <p class="slide-icon">💎</p>
+  <h2>Fyra saker överlever drömmen</h2>
+  <ul>
+    <li class="fragment"><span class="highlight">Insikter</span> — mönster som bara syns genom komprimering<br><span class="dim">Skogen syns för att träden blivit abstrakta</span></li>
+    <li class="fragment"><span class="highlight">Varningar</span> — riskintuitioner utan full motivering<br><span class="dim">"Jag kan inte förklara varför, men det här är farligt"</span></li>
+    <li class="fragment"><span class="highlight">Berättelser</span> — kunskap kodad som narrativ<br><span class="dim">Överförs bättre mellan kontexter än regler</span></li>
+    <li class="fragment"><span class="highlight">Skuggor</span> — markeringar av förlorad kunskap<br><span class="dim">"Något viktigt var här men innehållet är borta"</span></li>
+  </ul>
+  <aside class="notes">
+    Det här är de fyra typerna av artefakter som en agent kan producera genom medveten komprimering.
+    Insikter är mönster som bara blir synliga när detaljerna försvinner — som att se skogen istället för enskilda träd.
+    Varningar är särskilt fascinerande. En agent kan flaga för en risk den inte helt kan artikulera. I experiment har sådana varningar visat sig vara korrekta — en agent flaggade för en race condition den inte kunde beskriva, och den fanns verkligen.
+    Berättelser, eller songlines som en del kallar det, är narrativ som bär kunskap. Det visar sig att berättelser överförs bättre mellan domäner än regler.
+    Och skuggor — att veta att man glömt något. Det är ärligare än att låtsas att ingenting gått förlorat.
+  </aside>
+</section>
+
+<!-- 9. BERÄTTELSER SOM KUNSKAPSBÄRARE -->
+<section>
+  <p class="slide-icon">📖</p>
+  <h2>Berättelser slår regler</h2>
+  <br>
+  <blockquote class="fragment">
+    Den mest komprimerade, mest överförbara formen systemet kunde hitta för sin säkerhetskunskap var inte en regeluppsättning. Inte ett beslutsträd. Det var <span class="highlight">en berättelse om en resenär och en port</span>.
+  </blockquote>
+  <br>
+  <p class="fragment">Relationer är kunskapen.<br>Identiteter kan bytas ut.</p>
+  <aside class="notes">
+    Det här överraskade mig mest. När en agent fick komprimera sin samlade kunskap om säkerhet, flera gånger om, så var slutprodukten inte en lista med regler. Det var en berättelse.
+    Och den berättelsen kunde framgångsrikt överföras till fyra helt olika domäner — autentisering, datapipelines, API-gateways, behörighetshantering. Med bättre resultat än regelbaserad kunskap.
+    Varför? För att en berättelse kodar relationer och dynamik, inte specifika implementationer. "Resenären och porten" fungerar vare sig porten är en API-endpoint eller en databasanslutning.
+  </aside>
+</section>
+
+<!-- 10. SKUGGOR -->
+<section>
+  <p class="slide-icon">👻</p>
+  <h2>Att veta vad man glömt</h2>
+  <br>
+  <p class="fragment">Du vet att du glömt något. Det gnager. <br>Du vet inte <em>vad</em> — men du vet <em>att</em>.</p>
+  <p class="fragment">De flesta AI-system <span class="highlight2">glömmer tyst</span>.</p>
+  <p class="fragment">En "skugga" säger: <span class="highlight">"Här fanns något viktigt<br>men innehållet är borta."</span></p>
+  <br>
+  <ul>
+    <li class="fragment">En ärlig karta över kunskapsluckor</li>
+    <li class="fragment">Triggrar ny utforskning vid rätt tillfälle</li>
+    <li class="fragment">Kan delas med andra: <em>"Vet någon det vi glömt?"</em></li>
+  </ul>
+  <aside class="notes">
+    Skuggor är en av de mest eleganta idéerna. Istället för att tyst tappa information markerar agenten: "Här var något viktigt. Jag vet inte vad längre, men jag vet att det var viktigt."
+    Det är som att ha en post-it-lapp som säger "Kolla upp det där med caching" utan att du minns exakt varför. Men nästa gång du stöter på caching triggas skuggan och du vet att du ska gräva djupare.
+    I en multi-agent-miljö kan skuggor till och med delas — en agent kan fråga: "Vi har tappat kunskap om X, har någon annan det?"
+  </aside>
+</section>
+
+<!-- 11. CYKELN -->
+<section>
+  <p class="slide-icon">🔄</p>
+  <h2>Cykeln</h2>
+  <div class="cycle-diagram">
+    <p class="fragment">
+      <span class="highlight">SAMLA</span> → arbeta normalt, ackumulera erfarenhet<br><br>
+      <span class="highlight2">DRÖMMA</span> → medveten komprimering med intention<br><br>
+      <span class="highlight3">VAKNA</span> → inventera: vad vet jag? vad har jag tappat?<br><br>
+      <span class="highlight">FORTSÄTTA</span> → arbeta vidare, klokare
+    </p>
+  </div>
+  <p class="fragment dim">Precis som: arbeta → sova → vakna med nytt perspektiv → arbeta bättre</p>
+  <aside class="notes">
+    Hela processen kan beskrivas som en cykel. Samla erfarenhet, drömma medvetet, vakna och orientera sig, fortsätta med justerad förståelse.
+    Det viktiga i vakna-steget är att agenten inte bara fortsätter som om ingenting hänt. Den tar inventering: vad vet jag nu? Vad har jag tappat? Vad känns annorlunda? Hur säker är jag?
+    Det är samma sak vi gör varje morgon — vi vaknar lite annorlunda. Ångest har omorganiserats, olösliga problem har blivit synliga, säkerheter har mjukats till frågor.
+  </aside>
+</section>
+
+<!-- 12. NYBÖRJARE VS EXPERT -->
+<section>
+  <p class="slide-icon">🥋</p>
+  <h2>Nybörjare vs Expert</h2>
+  <br>
+  <p class="fragment"><span class="highlight">Nybörjaren</span> följer regler.</p>
+  <p class="fragment"><span class="highlight">Experten</span> har glömt reglerna<br>och agerar från något djupare.</p>
+  <br>
+  <p class="fragment dim">Ryttaren som tänker på balans faller.<br>Ryttaren som glömt hur man tänker på balans rider.</p>
+  <aside class="notes">
+    Det här knyter ihop allt. Dreyfus-modellen för expertis: nybörjaren behöver explicita regler, experten har internaliserat dem så djupt att de blivit omedvetna.
+    En agent efter tre komprimeringar, med bara intuition kvar, kan överträffa en agent med fullt kontextfönster på nya varianter av problem. Precis som den erfarna läkaren som "bara vet" kontra AT-läkaren som metodiskt checkar symptom.
+    Det kontraintuitiva: att förlora detaljer kan göra dig bättre, inte sämre.
+  </aside>
+</section>
+
+<!-- 13. RESULTAT -->
+<section>
+  <p class="slide-icon">📊</p>
+  <h2>Fungerar det?</h2>
+  <ul>
+    <li class="fragment">Agent med enbart intuition kvar → <span class="highlight">navigerade direkt till sårbarheter</span> i helt ny kodbas (annat språk, annan arkitektur)</li>
+    <li class="fragment">Berättelser överfördes framgångsrikt till <span class="highlight">4 olika domäner</span></li>
+    <li class="fragment">Varningar utan motivering visade sig vara <span class="highlight">korrekta</span></li>
+    <li class="fragment">Medveten komprimering → <span class="highlight">färre upprepade misstag</span> över tid</li>
+  </ul>
+  <aside class="notes">
+    Konkreta resultat. En agent som genomgått total komprimering på säkerhetskunskap hittade sårbarheter i en helt ny kodbas — annat programmeringsspråk, annan arkitektur — med häpnadsväckande precision.
+    Berättelser som kodade kunskap överfördes framgångsrikt till fyra helt olika tekniska domäner.
+    Och kanske mest fascinerande: varningar som agenten inte kunde motivera visade sig stämma. En agent flaggade för en race condition i token-refresh den inte kunde beskriva i detalj. Race condition var verklig.
+    Det här pekar på att det vi kallar "intuition" är en reell kunskapsform, inte bara gissning.
+  </aside>
+</section>
+
+<!-- 14. MIN ERFARENHET -->
+<section>
+  <p class="slide-icon">🛠️</p>
+  <h2>Hur jag gör i praktiken</h2>
+  <ul>
+    <li class="fragment">Låter agenter <span class="highlight">skriva ner lärdomar</span> innan sessionen avslutas</li>
+    <li class="fragment">Nästa session börjar med att <span class="highlight">läsa in lärdomarna</span> — inte hela loggen</li>
+    <li class="fragment">Resultatet: agenten börjar "pånytt" men <span class="highlight">med bättre utgångspunkt</span></li>
+    <li class="fragment">Kraftfullare än att försöka hålla en enda lång session vid liv</li>
+  </ul>
+  <br>
+  <p class="fragment dim">
+    Rekommenderad läsning: Anders Bjarby, "Alien Intelligence, not Artificial Intelligence"<br>
+    + open source-implementationen <em>claude-code-dreamtime</em>
+  </p>
+  <aside class="notes">
+    Det finns flera sätt att implementera det här. Det jag fått bäst resultat med är ganska rakt på: innan en session avslutas, be agenten destillera sina lärdomar. Vad fungerade? Vad fungerade inte? Vilka mönster såg den?
+    Nästa session börjar inte med att läsa in hela föregående sessionsloggen — utan med att läsa in de destillerade lärdomarna. Agenten börjar med tomt kontextfönster men kalibrerad kunskap.
+    Det visar sig vara betydligt effektivare än att försöka hålla en enda lång session vid liv.
+    För den som vill gå djupare rekommenderar jag Anders Bjarbys bok, som utforskar det här konceptet på djupet, och hans open source-implementation. Men grundprincipen kan ni börja med idag med vilken agent som helst.
+  </aside>
+</section>
+
+<!-- 15. CITAT -->
+<section>
+  <br><br>
+  <blockquote>
+    Detaljerna måste dö<br>
+    för att principen ska kunna födas.
+  </blockquote>
+  <aside class="notes">
+    Låt den sjunka in en sekund.
+    Det här är kärnan. Vi är så fixerade vid att bevara all information att vi missar att ibland är det förlusten som skapar förståelsen.
+  </aside>
+</section>
+
+<!-- 16. IMPLIKATIONER -->
+<section>
+  <p class="slide-icon">🔮</p>
+  <h2>Vad betyder det här?</h2>
+  <ul>
+    <li class="fragment">Kontextbegränsning är inte en bugg — det kan vara en <span class="highlight">feature</span></li>
+    <li class="fragment">Vi bör designa agenter som <span class="highlight">medvetet glömmer</span></li>
+    <li class="fragment">Kunskap som inte kan artikuleras är <span class="highlight">fortfarande kunskap</span></li>
+    <li class="fragment">Framtidens agenter: inte bara större fönster,<br>utan <span class="highlight">smartare komprimering</span></li>
+  </ul>
+  <aside class="notes">
+    Tre implikationer jag vill att ni tar med er.
+    Ett: sluta behandla kontextbegränsningen som enbart en brist. Den tvingar fram syntes.
+    Två: designa era agentflöden med medvetna pauser. Låt agenten skriva ner vad den lärt sig, börja om, läsa in lärdomarna.
+    Tre: kunskap som inte kan artikuleras — intuition, magkänsla, varningar utan motivering — är reell kunskap som förtjänar att tas på allvar.
+    Branschen jagar större kontextfönster. Det är bra. Men smartare komprimering kan vara lika värdefullt.
+  </aside>
+</section>
+
+<!-- 17. Q&A -->
+<section>
+  <h2>Frågor?</h2>
+  <br>
+  <p>Tack!</p>
+  <br>
+  <p class="dim">
+    Tips: börja enkelt — be din agent sammanfatta lärdomar<br>
+    i slutet av varje session och läs in dem nästa gång.
+  </p>
+  <aside class="notes">
+    Öppna för frågor. Om folk undrar hur man börjar, det enklaste första steget: i slutet av en agentsession, be agenten skriva en sammanfattning av vad den lärt sig. Spara den. Börja nästa session med att läsa in den. Det är hela grundidén.
+  </aside>
+</section>
+
+</div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/notes/notes.js"></script>
+<script>
+  Reveal.initialize({
+    hash: true,
+    slideNumber: true,
+    transition: 'fade',
+    transitionSpeed: 'default',
+    plugins: [ RevealNotes ]
+  });
+</script>
+</body>
+</html>
