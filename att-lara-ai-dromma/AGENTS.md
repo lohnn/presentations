@@ -30,12 +30,6 @@ Svenska
 - Mörkt tema, Playfair Display + Inter, tre accentfärger (orange/rosa/lila)
 - Speaker notes (tryck S) innehåller fullständigt talmanus
 
-## Att göra vid fortsatt arbete
-- Finjustera ordval i speaker notes
-- Eventuellt lägga till SVG-illustrationer/diagram (kunskapstrappan, cykeln)
-- Testa timing — 30 min med Q&A
-- Överväg om slide 3b (bryggan) behövs eller om flödet är tydligt utan den
-
 ## Källmaterial
 - Boken: Anders Bjarby, kapitel om DREAMTIME
 - Repo: github.com/andersbjarby/claude-code-dreamtime

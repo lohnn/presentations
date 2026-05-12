@@ -351,35 +351,50 @@
 
         <!-- 5. KUNSKAPSTRAPPAN -->
         <section>
-            <p class="slide-icon">📐</p>
             <h2>Kunskapstrappan</h2>
-            <table>
-                <tr class="fragment">
-                    <th>Nivå</th>
-                    <th>Vad det är</th>
-                    <th>Du känner igen det som...</th>
-                </tr>
-                <tr class="fragment">
-                    <td>Rådata</td>
-                    <td>Allt som hänt, varje detalj</td>
-                    <td>Dina anteckningar mitt i mötet</td>
-                </tr>
-                <tr class="fragment">
-                    <td>Mönster</td>
-                    <td>Det viktiga har filtrerats fram</td>
-                    <td>Din sammanfattning på kvällen</td>
-                </tr>
-                <tr class="fragment">
-                    <td>Principer</td>
-                    <td>Överförbara regler</td>
-                    <td>Det du berättar för en kollega om projektet</td>
-                </tr>
-                <tr class="fragment">
-                    <td>Intuition</td>
-                    <td>Outtalat men kalibrerat</td>
-                    <td>Din magkänsla efter 10 års erfarenhet</td>
-                </tr>
-            </table>
+            <div style="display: flex; align-items: center; justify-content: center; gap: 2em;">
+                <svg viewBox="0 0 420 400" width="420" height="400" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0;">
+                    <!-- Steg 1: Rådata (botten) -->
+                    <g class="fragment" data-fragment-index="1">
+                        <rect x="0" y="300" width="400" height="80" rx="8" fill="rgba(255,137,6,0.15)" stroke="#ff8906" stroke-width="1.5"/>
+                        <text x="200" y="345" text-anchor="middle" fill="#ff8906" font-family="Playfair Display,serif" font-size="22" font-weight="700">Rådata</text>
+                        <text x="200" y="370" text-anchor="middle" fill="#a7a9be" font-family="Inter,sans-serif" font-size="13">Dina anteckningar mitt i mötet</text>
+                    </g>
+                    <!-- Steg 2: Mönster -->
+                    <g class="fragment" data-fragment-index="2">
+                        <rect x="50" y="210" width="300" height="80" rx="8" fill="rgba(229,49,112,0.15)" stroke="#e53170" stroke-width="1.5"/>
+                        <text x="200" y="255" text-anchor="middle" fill="#e53170" font-family="Playfair Display,serif" font-size="22" font-weight="700">Mönster</text>
+                        <text x="200" y="280" text-anchor="middle" fill="#a7a9be" font-family="Inter,sans-serif" font-size="13">Din sammanfattning på kvällen</text>
+                    </g>
+                    <!-- Steg 3: Principer -->
+                    <g class="fragment" data-fragment-index="3">
+                        <rect x="100" y="120" width="200" height="80" rx="8" fill="rgba(127,90,240,0.15)" stroke="#7f5af0" stroke-width="1.5"/>
+                        <text x="200" y="165" text-anchor="middle" fill="#7f5af0" font-family="Playfair Display,serif" font-size="22" font-weight="700">Principer</text>
+                        <text x="200" y="190" text-anchor="middle" fill="#a7a9be" font-family="Inter,sans-serif" font-size="13">Det du berättar för en kollega</text>
+                    </g>
+                    <!-- Steg 4: Intuition (toppen) -->
+                    <g class="fragment" data-fragment-index="4">
+                        <rect x="150" y="30" width="100" height="80" rx="8" fill="rgba(255,137,6,0.25)" stroke="#ff8906" stroke-width="2"/>
+                        <text x="200" y="75" text-anchor="middle" fill="#ff8906" font-family="Playfair Display,serif" font-size="22" font-weight="700">Intuition</text>
+                    </g>
+                    <!-- Pilar uppåt -->
+                    <g class="fragment" data-fragment-index="2">
+                        <line x1="200" y1="300" x2="200" y2="294" stroke="#a7a9be" stroke-width="1" marker-end="url(#arrow)"/>
+                    </g>
+                    <defs>
+                        <marker id="arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                            <path d="M 0 0 L 10 5 L 0 10 z" fill="#a7a9be"/>
+                        </marker>
+                    </defs>
+                </svg>
+                <div style="text-align:left; font-size:0.75em; color: var(--muted); max-width: 420px;">
+                    <p class="fragment" data-fragment-index="1">Varje detalj, varje rad</p>
+                    <p class="fragment" data-fragment-index="2">Det viktiga har filtrerats fram</p>
+                    <p class="fragment" data-fragment-index="3">Överförbara regler</p>
+                    <p class="fragment" data-fragment-index="4">Outtalat men kalibrerat — magkänslan efter 10 års erfarenhet</p>
+                    <p class="fragment" data-fragment-index="5" style="color: var(--accent); margin-top:1em;">Ju högre nivå, desto mer portabel kunskap.</p>
+                </div>
+            </div>
             <aside class="notes">
                 <p>Tänk på kunskap som en <b>trappa</b>. <b>[*CLICK 1*]</b></p>
                 <p>
@@ -610,30 +625,77 @@
 
         <!-- 11. CYKELN -->
         <section>
-            <p class="slide-icon">🔄</p>
             <h2>Cykeln</h2>
-            <div class="cycle-diagram">
-                <p class="fragment">
-                    <span class="highlight">SAMLA</span> → arbeta normalt, ackumulera erfarenhet<br><br>
-                    <span class="highlight2">DRÖMMA</span> → medveten komprimering med intention<br><br>
-                    <span class="highlight3">VAKNA</span> → inventera: vad vet jag? vad har jag tappat?<br><br>
-                    <span class="highlight">FORTSÄTTA</span> → arbeta vidare, klokare
-                </p>
+            <div style="display: flex; align-items: center; justify-content: center; gap: 2.5em;">
+                <svg viewBox="0 0 400 400" width="380" height="380" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0;">
+                    <!-- Cirkulär bana (bakgrund) -->
+                    <circle cx="200" cy="200" r="140" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="2"/>
+                    <!-- SAMLA (topp) -->
+                    <g class="fragment" data-fragment-index="1">
+                        <circle cx="200" cy="60" r="44" fill="rgba(255,137,6,0.15)" stroke="#ff8906" stroke-width="1.5"/>
+                        <text x="200" y="65" text-anchor="middle" fill="#ff8906" font-family="Playfair Display,serif" font-size="17" font-weight="700">SAMLA</text>
+                    </g>
+                    <!-- DRÖMMA (höger) -->
+                    <g class="fragment" data-fragment-index="2">
+                        <circle cx="340" cy="200" r="44" fill="rgba(229,49,112,0.15)" stroke="#e53170" stroke-width="1.5"/>
+                        <text x="340" y="205" text-anchor="middle" fill="#e53170" font-family="Playfair Display,serif" font-size="17" font-weight="700">DRÖMMA</text>
+                    </g>
+                    <!-- VAKNA (botten) -->
+                    <g class="fragment" data-fragment-index="3">
+                        <circle cx="200" cy="340" r="44" fill="rgba(127,90,240,0.15)" stroke="#7f5af0" stroke-width="1.5"/>
+                        <text x="200" y="345" text-anchor="middle" fill="#7f5af0" font-family="Playfair Display,serif" font-size="17" font-weight="700">VAKNA</text>
+                    </g>
+                    <!-- FORTSÄTTA (vänster) -->
+                    <g class="fragment" data-fragment-index="4">
+                        <circle cx="60" cy="200" r="44" fill="rgba(255,137,6,0.15)" stroke="#ff8906" stroke-width="1.5"/>
+                        <text x="60" y="195" text-anchor="middle" fill="#ff8906" font-family="Playfair Display,serif" font-size="14" font-weight="700">FORT-</text>
+                        <text x="60" y="213" text-anchor="middle" fill="#ff8906" font-family="Playfair Display,serif" font-size="14" font-weight="700">SÄTTA</text>
+                    </g>
+                    <!-- Pilar mellan stegen -->
+                    <defs>
+                        <marker id="arrowCycle" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+                            <path d="M 0 0 L 10 5 L 0 10 z" fill="#a7a9be"/>
+                        </marker>
+                    </defs>
+                    <g class="fragment" data-fragment-index="2">
+                        <path d="M 238 82 Q 300 110 318 162" fill="none" stroke="#a7a9be" stroke-width="1.5" marker-end="url(#arrowCycle)"/>
+                    </g>
+                    <g class="fragment" data-fragment-index="3">
+                        <path d="M 318 238 Q 300 290 238 318" fill="none" stroke="#a7a9be" stroke-width="1.5" marker-end="url(#arrowCycle)"/>
+                    </g>
+                    <g class="fragment" data-fragment-index="4">
+                        <path d="M 162 318 Q 100 290 82 238" fill="none" stroke="#a7a9be" stroke-width="1.5" marker-end="url(#arrowCycle)"/>
+                    </g>
+                    <g class="fragment" data-fragment-index="5">
+                        <path d="M 82 162 Q 100 110 162 82" fill="none" stroke="#a7a9be" stroke-width="1.5" marker-end="url(#arrowCycle)"/>
+                    </g>
+                </svg>
+                <div style="text-align:left; font-size:0.72em; max-width:420px;">
+                    <p class="fragment" data-fragment-index="1" style="color:#ff8906;">Arbeta normalt, ackumulera erfarenhet</p>
+                    <p class="fragment" data-fragment-index="2" style="color:#e53170;">Medveten komprimering med intention</p>
+                    <p class="fragment" data-fragment-index="3" style="color:#7f5af0;">Inventera: vad vet jag? Vad har jag tappat?</p>
+                    <p class="fragment" data-fragment-index="4" style="color:#ff8906;">Arbeta vidare — klokare</p>
+                    <p class="fragment" data-fragment-index="5" style="color:var(--muted); margin-top:1em; font-style:italic;">Precis som: arbeta → sova → vakna med nytt perspektiv → arbeta bättre</p>
+                </div>
             </div>
-            <p class="fragment dim">Precis som: arbeta → sova → vakna med nytt perspektiv → arbeta bättre</p>
             <aside class="notes">
                 <p>Hela processen som en <b>cykel</b>. <b>[*CLICK 1*]</b></p>
                 <p>
-                    <b>Samla</b> erfarenhet, <b>drömma</b> medvetet, <b>vakna</b> och orientera sig,
-                    <b>fortsätta</b> med justerad förståelse.
+                    <b>Samla</b> — arbeta normalt, ackumulera erfarenhet. <b>[*CLICK 2*]</b>
                 </p>
                 <p>
-                    Det viktiga i <b>vakna-steget</b>: agenten fortsätter inte som om ingenting hänt. Den
-                    tar <b>inventering</b> — vad vet jag nu? Vad har jag tappat? Vad känns <b>annorlunda</b>?
+                    <b>Drömma</b> — medveten komprimering. Inte vänta tills fönstret tvingar det. <b>[*CLICK 3*]</b>
+                </p>
+                <p>
+                    <b>Vakna</b> — och här är det viktiga: agenten fortsätter inte som om <b>ingenting hänt</b>. Den
+                    tar <b>inventering</b> — vad vet jag nu? Vad har jag <b>tappat</b>? <b>[*CLICK 4*]</b>
+                </p>
+                <p>
+                    <b>Fortsätta</b> — arbeta vidare med justerad förståelse. <b>[*CLICK 5*]</b>
                 </p>
                 <p>
                     Samma sak vi gör <b>varje morgon</b> — vi vaknar lite annorlunda. <b>Oro</b> har lagt sig,
-                    <b>olösliga problem</b> har blivit synliga. <b>[*CLICK 2*]</b>
+                    <b>olösliga problem</b> har blivit synliga.
                 </p>
             </aside>
         </section>
